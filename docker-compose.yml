@@ -1,0 +1,25 @@
+version: '3'
+networks:
+  mynetworkTP5:
+    driver: bridge
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo
+
+    networks:
+      - mynetworkTP5
+    ports:
+      - 27017:27017
+  flaskapp:
+    build: .
+    ports:
+      - 5000:5000
+    networks:
+      - mynetworkTP5
+    volumes:
+      - type: bind
+        source: ./file.txt
+        target: /app/src/file.txt
+    depends_on:
+      - mongodb
